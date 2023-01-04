@@ -2,15 +2,15 @@
 
 Need Python 3.10 in the System
 check python version
->_ python --version (in the cmd)
+>[>_ python --version (in the cmd)]
 
 
 install Virtual Environment in the directory
->_ python3 -m pip install --user virtualenv
+>[>_ python3 -m pip install --user virtualenv]
 
 
 create virtual environment
- >_ python -m venv venv
+ >[>_ python -m venv venv]
 
 
 install  requirements
