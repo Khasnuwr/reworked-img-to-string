@@ -6,6 +6,14 @@ from PIL import ImageFont, ImageDraw, Image, ImageGrab
 import numpy as np
 
 
+st.set_page_config(
+    page_title="Numberplate Read and Detect System",
+    page_icon="🌐",
+    layout="centered",
+    initial_sidebar_state="expanded",
+    menu_items=None,
+)
+
 hide_streamlit_style = """
             <style>
             #MainMenu {visibility: hidden;}
@@ -17,16 +25,19 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 
 def read_str_from_img(frame):
-    plate_holder = st.empty()
-    reader = easyocr.Reader(['bn'], gpu=True)
-    result = reader.readtext(frame)
+
+    try:
+        reader = easyocr.Reader(['bn'], gpu=True)
+        result = reader.readtext(frame)
+    except:
+        reader = easyocr.Reader(['bn'], gpu=False)
+        result = reader.readtext(frame)
     text = ''
     for string in result:
         text = text + string[1] + '\n'
-    print(text)
-    plate_holder.empty()
-    plate_holder.text(text)
-    # plate_holder.empty()
+    #print(text)
+    return text
+
 
 
 
@@ -128,6 +139,7 @@ print(choice)
 
 if choice == "Realtime detection":
     st.title("Numberplate Read and Detect System")
+
     plate_detection()
 
             
@@ -139,8 +151,18 @@ if choice == "Realtime detection":
 
 
 elif choice == "Read from Picture":
-    st.text("Coming Soon 😎")
+    st.text("Upload Numberplate Picture to read 😎")
+    uploaded_file = st.file_uploader("", type=['jpg', 'png', 'jpeg'])
+    if uploaded_file is not None:
+        image = Image.open(uploaded_file)
+        st.image(image)#, width=300)
+        str_ = read_str_from_img(image)
+        st.text(str_)
 
+        import gc
+        torch.cuda.empty_cache()
+        gc.collect()
 
 else:
+
     st.text("SELECT READ NUMBERPLATE TO READ 😊")
