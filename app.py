@@ -158,10 +158,13 @@ elif choice == "Read from Picture":
         st.image(image)#, width=300)
         str_ = read_str_from_img(image)
         st.text(str_)
-
-        import gc
-        torch.cuda.empty_cache()
-        gc.collect()
+        
+        try:
+            import gc
+            torch.cuda.empty_cache()
+            gc.collect()
+        except:
+            pass
 
 else:
 
